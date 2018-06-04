@@ -37,6 +37,7 @@ def interact(env, agent, num_episodes=20000, window=100):
             next_state, reward, done, _ = env.step(action)
             # agent performs internal updates based on sampled experience
             agent.step(state, action, reward, next_state, done)
+            agent.epsilon=1.0/i_episode            
             # update the sampled reward
             samp_reward += reward
             # update the state (s <- s') to next time step
@@ -61,4 +62,5 @@ def interact(env, agent, num_episodes=20000, window=100):
             print('\nEnvironment solved in {} episodes.'.format(i_episode), end="")
             break
         if i_episode == num_episodes: print('\n')
+
     return avg_rewards, best_avg_reward
