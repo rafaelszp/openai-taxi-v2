@@ -52,4 +52,4 @@ class Agent:
         """
         policy = self.__action_probs__(self.Q[next_state])
         next_vsa = np.dot(self.Q[next_state],policy)
-        self.Q[state][action] = self.Q[state][action] * self.alpha*(reward+self.gamma*next_vsa-self.Q[state][action])
+        self.Q[state][action] = self.Q[state][action] + self.alpha*(reward+self.gamma*next_vsa-self.Q[state][action])
