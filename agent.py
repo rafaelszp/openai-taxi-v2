@@ -50,7 +50,6 @@ class Agent:
         - next_state: the current state of the environment
         - done: whether the episode is complete (True or False)
         """
-        
         policy = self.__action_probs__(self.Q[next_state])
         next_vsa = np.dot(self.Q[next_state],policy)
         self.Q[state][action] = self.Q[state][action] * self.alpha*(reward+self.gamma*next_vsa-self.Q[state][action])
