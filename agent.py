@@ -16,6 +16,7 @@ class Agent:
         self.gamma = gamma
         self.alpha = alpha
         self.episode=0
+        self.num_episodes=0
 
     def select_action(self, state):
         """ Given the state, select an action.
@@ -54,6 +55,8 @@ class Agent:
         
         #eps=1.0/(self.episode/20000.0+1.0)
         self.epsilon=0.005
+        if self.num_episodes<(self.num_episodes*0.3):
+            self.epsilon = self.episode/(self.num_episodes+1)
         
 
         #policy = self.__action_probs__(self.Q[next_state])
