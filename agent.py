@@ -15,6 +15,7 @@ class Agent:
         self.epsilon = 0.0
         self.gamma = gamma
         self.alpha = alpha
+        self.episode=0
 
     def select_action(self, state):
         """ Given the state, select an action.
@@ -28,8 +29,8 @@ class Agent:
         - action: an integer, compatible with the task's action space
         """
         probs = self.__action_probs__(self.Q[state])
-        #return np.random.choice(self.nA)
         return np.random.choice(range(self.nA),p=probs)
+        #return np.argmax(self.Q[state]+np.random.randn(1,self.nA)*(1.0/float(self.episode+1)))
     
     def __action_probs__(self,qs):
         probs = np.full(self.nA,self.epsilon/self.nA)
@@ -50,6 +51,12 @@ class Agent:
         - next_state: the current state of the environment
         - done: whether the episode is complete (True or False)
         """
-        policy = self.__action_probs__(self.Q[next_state])
-        next_vsa = np.dot(self.Q[next_state],policy)
-        self.Q[state][action] = self.Q[state][action] + self.alpha*(reward+self.gamma*next_vsa-self.Q[state][action])
+        
+        #eps=1.0/(self.episode/20000.0+1.0)
+        self.epsilon=0.005
+        
+
+        #policy = self.__action_probs__(self.Q[next_state])
+        #term = np.dot(self.Q[next_state],policy) # expected sarsa
+        term =  0 if done else np.max(self.Q[next_state]) #qlearning
+        self.Q[state][action] = self.Q[state][action] + self.alpha*(reward+self.gamma*term-self.Q[state][action])
